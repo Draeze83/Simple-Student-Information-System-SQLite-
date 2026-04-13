@@ -1,0 +1,46 @@
+<configuration>
+
+    <!--
+        Student Information System – Logback Configuration
+        ====================================================
+        Two appenders:
+          CONSOLE  – INFO and above, coloured, for development
+          FILE     – DEBUG and above, rolling daily, for production diagnostics
+
+        Log files are written to the "logs/" directory next to the JAR.
+        Each file rolls at midnight; the last 30 days are kept.
+    -->
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/sis.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- Daily rollover; keep 30 days of history; cap total at 100 MB -->
+            <fileNamePattern>logs/sis.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger: DEBUG to file, INFO to console -->
+    <root level="DEBUG">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- Silence noisy SQLite JDBC internals -->
+    <logger name="org.sqlite" level="WARN"/>
+
+</configuration>

@@ -1,0 +1,25 @@
+{
+  "java.project.referencedLibraries": [
+    "lib/sqlite-jdbc-3.45.3.0.jar",
+    "lib/slf4j-api-1.7.36.jar",
+    "lib/logback-classic-1.2.12.jar",
+    "lib/logback-core-1.2.12.jar",
+    "libtest/junit-platform-console-standalone-1.10.2.jar"
+  ],
+  "java.project.sourcePaths": [
+    "src/main/java",
+    "src/test/java"
+  ],
+  "files.exclude": {
+    "out": true,
+    "target": true,
+    "StudentInfoSystem.jar": true,
+    "student_info_system.db": true,
+    "manifest.txt": true,
+    "sources.txt": true
+  },
+  "search.exclude": {
+    "out": true,
+    "target": true
+  }
+}

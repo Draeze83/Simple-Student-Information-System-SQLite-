@@ -1,0 +1,14 @@
+# Build outputs
+out/
+target/
+
+# Packaged runtime artifacts
+StudentInfoSystem.jar
+student_info_system.db
+
+# Generated helper files
+manifest.txt
+sources.txt
+*.log
+
+# IDE artifacts
