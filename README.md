@@ -131,21 +131,27 @@ All dependencies are declared in `pom.xml` and are automatically downloaded by M
 Although the system is designed as a local desktop application, it includes several basic security and reliability measures:
 
 **SQL Injection Prevention**
+
 All database queries use prepared statements with parameter binding. User input is never inserted directly into a query string, which means malicious input cannot alter the structure of a SQL query.
 
 **Sort Column Validation**
+
 Sorting is one area where dynamic SQL is unavoidable, since the column name must be embedded in the query. To address this, each data access class maintains an explicit list of allowed column names. Any sort request that does not match a name on that list is rejected before the query runs.
 
 **Input Validation**
+
 Both the dialog forms and the service layer validate data independently. This means input is checked before it reaches the database, and the rules are enforced even if the user interface is bypassed programmatically. Specific rules include: student IDs must match the `YYYY-NNNN` format; college codes may only contain uppercase letters and digits and must not exceed ten characters; program codes follow similar rules; names have maximum character lengths; year level must be between 1 and 5; gender must be one of Male, Female, or Other.
 
 **Referential Integrity**
+
 The database schema uses foreign keys to prevent orphaned records. You cannot delete a college that still has programs, and you cannot delete a program that still has enrolled students. These constraints are enforced at the database level, not just in the application.
 
 **Database Safety Settings**
+
 When connecting to SQLite, the application enables Write-Ahead Logging (WAL) mode and sets synchronous writes to NORMAL. This configuration protects the database file from corruption in the event of an unexpected shutdown, while still providing acceptable performance.
 
 **Connection Pool Timeout**
+
 The application maintains a small pool of reusable database connections. If all connections are in use and a new request cannot be fulfilled within five seconds, the operation fails with a clear error rather than waiting indefinitely.
 
 ---
