@@ -2,7 +2,7 @@
 
 ## Description
 
-The Student Information System (SIS) is a desktop application built in Java that allows a user to manage records for students, academic programs, and colleges. It provides a graphical interface through which users can create, view, update, delete, and list records across all three of these categories. The application is built around a local SQLite database, and the database comes pre-populated with seven colleges, over thirty programs, and 5,100 student records on first run.
+The **Student Information System (SIS)** is a desktop application built in Java that allows a user to manage records for students, academic programs, and colleges. It provides a graphical interface using Java Swing through which users can create, view, update, delete, and list records across all three of these categories. The application is built around a local SQLite database, and the database comes pre-populated with seven colleges, over thirty programs, and 5,100 student records on first run.
 
 The system is intended for use by administrative staff who need to manage enrollment data without the complexity of a web-based or server-dependent solution. Because everything runs locally as a single executable file, no internet connection, web server, or separate database server is required.
 
@@ -28,13 +28,13 @@ To verify your installation, run:
 mvn -version
 ```
 
-No other software needs to be installed. The database engine (SQLite) and all other required libraries are bundled directly into the project.
+No other software needs to be installed. The database (SQLite) and all other required libraries are bundled directly into the project.
 
 ---
 
 ## How to Build
 
-Navigate to the `sis` folder inside the project directory. This is where the `pom.xml` build file and source code are located.
+Navigate to the `sis/` folder inside the project directory. This is where the `pom.xml` build file and source code are located.
 
 **On Linux or macOS:**
 ```bash
@@ -68,13 +68,13 @@ sis/target/student-information-system-1.0.0-shaded.jar
 
 ## How to Run
 
-Once the build is complete, run the application with the following command from inside the `sis` folder:
+Once the build is complete, run the application with the following command from inside the `sis/` folder:
 
 ```
 java -jar target/student-information-system-1.0.0-shaded.jar
 ```
 
-Alternatively, the project can be run directly from an IDE by executing the `run.bat` file located in the `sis` folder.
+Alternatively, the project can be run directly from an IDE by executing the `run.bat` file located in the `sis/` folder.
 
 The application will open a window with three tabs: Students, Programs, and Colleges. On the very first run, the database will be created and populated automatically. Subsequent runs will detect the existing data and skip the seeding step.
 
@@ -130,28 +130,22 @@ All dependencies are declared in `pom.xml` and are automatically downloaded by M
 
 Although the system is designed as a local desktop application, it includes several basic security and reliability measures:
 
-**SQL Injection Prevention**
-
+**SQL Injection Prevention.**
 All database queries use prepared statements with parameter binding. User input is never inserted directly into a query string, which means malicious input cannot alter the structure of a SQL query.
 
-**Sort Column Validation**
-
+**Sort Column Validation.**
 Sorting is one area where dynamic SQL is unavoidable, since the column name must be embedded in the query. To address this, each data access class maintains an explicit list of allowed column names. Any sort request that does not match a name on that list is rejected before the query runs.
 
-**Input Validation**
-
+**Input Validation.**
 Both the dialog forms and the service layer validate data independently. This means input is checked before it reaches the database, and the rules are enforced even if the user interface is bypassed programmatically. Specific rules include: student IDs must match the `YYYY-NNNN` format; college codes may only contain uppercase letters and digits and must not exceed ten characters; program codes follow similar rules; names have maximum character lengths; year level must be between 1 and 5; gender must be one of Male, Female, or Other.
 
-**Referential Integrity**
-
+**Referential Integrity.**
 The database schema uses foreign keys to prevent orphaned records. You cannot delete a college that still has programs, and you cannot delete a program that still has enrolled students. These constraints are enforced at the database level, not just in the application.
 
-**Database Safety Settings**
-
+**Database Safety Settings.**
 When connecting to SQLite, the application enables Write-Ahead Logging (WAL) mode and sets synchronous writes to NORMAL. This configuration protects the database file from corruption in the event of an unexpected shutdown, while still providing acceptable performance.
 
-**Connection Pool Timeout**
-
+**Connection Pool Timeout.**
 The application maintains a small pool of reusable database connections. If all connections are in use and a new request cannot be fulfilled within five seconds, the operation fails with a clear error rather than waiting indefinitely.
 
 ---
